@@ -13,4 +13,5 @@ open class Day(val year: Int, val day: Int) {
     open fun part2(): Any = TODO()
 
     fun List<String>.filterNotEmpty(): List<String> = filter { it != "" }
+    fun String.filterNotWhitespace(): String = filterNot { it.isWhitespace() }
 }
