@@ -82,3 +82,5 @@ build/
 .idea/misc.xml
 .idea/vcs.xml
 gradle/*
+gradlew
+gradlew.bat
