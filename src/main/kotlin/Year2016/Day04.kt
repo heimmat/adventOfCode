@@ -35,6 +35,7 @@ class Day04: Day(2016,4) {
             .joinToString("")
     }
 
+    //https://rosettacode.org/wiki/Caesar_cipher#Kotlin
     fun String.decodeCypher(shift: Int): String {
         val offset = shift % 26
         if (offset == 0) return this
