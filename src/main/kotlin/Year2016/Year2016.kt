@@ -8,6 +8,7 @@ class Year2016 : Year(2016) {
         1 to Day01(),
         2 to Day02(),
         3 to Day03(),
-        4 to Day04()
+        4 to Day04(),
+        5 to Day05()
     )
 }
