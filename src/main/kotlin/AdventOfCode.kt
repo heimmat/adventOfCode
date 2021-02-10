@@ -11,7 +11,7 @@ class AdventOfCode: CliktCommand() {
 
     override fun run() {
         val dayProblems = dayOption.map {
-            it.key.toInt() to it.value.split(',',';').map { it.toInt() }
+            it.key.toInt() to if (it.value != "") it.value.split(',',';').map { it.toInt() } else emptyList()
         }.toMap()
         if (dayProblems.isEmpty()) {
             Year.supportedYears.forEach { y ->
@@ -28,9 +28,16 @@ class AdventOfCode: CliktCommand() {
         } else {
             dayProblems.forEach { y, days ->
                 val year = Year.fromInt(y)
-                days.forEach { d ->
-                    year.runDay(d)
+                if (days.isEmpty()) {
+                    Day.supportedDays.forEach { d ->
+                        year.runDay(d)
+                    }
+                } else {
+                    days.forEach { d ->
+                        year.runDay(d)
+                    }
                 }
+
             }
         }
     }
