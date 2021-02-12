@@ -10,6 +10,7 @@ class Year2016 : Year(2016) {
         3 to Day03(),
         4 to Day04(),
         5 to Day05(),
-        6 to Day06()
+        6 to Day06(),
+        7 to Day07()
     )
 }
