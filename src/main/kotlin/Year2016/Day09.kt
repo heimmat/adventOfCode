@@ -34,10 +34,32 @@ class Day09 : Day(2016,9) {
 
     }
 
+    private fun String.decodedLength(): Long {
+        var nextMarker: Marker?
+        var startIndex = 0
+        var decodedLength = 0L
+        do {
+            nextMarker = nextMarker(startIndex)
+            nextMarker?.let {
+                decodedLength += nextMarker.markerRange.first - startIndex
+                startIndex = nextMarker.contentRange.last + 1
+                //length += nextMarker.repetitions * (nextMarker.contentRange.last + 1 - nextMarker.contentRange.first)
+                decodedLength += nextMarker.repetitions * substring(nextMarker.contentRange).decodedLength()
+
+            }
+        } while (nextMarker != null)
+        if (decodedLength == 0L) decodedLength = length.toLong()
+        return decodedLength
+    }
+
     private data class Marker(val markerRange: IntRange, val contentRange: IntRange, val repetitions: Int)
 
     override fun part1(): Any {
         return input.asString.decode().length
+    }
+
+    override fun part2(): Any {
+        return input.asString.decodedLength()
     }
 
 }
