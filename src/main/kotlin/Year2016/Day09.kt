@@ -3,7 +3,7 @@ package Year2016
 import Day
 
 class Day09 : Day(2016,9) {
-    val regexForMarker = Regex("""\((\d+)x(\d+)\)""")
+    private val regexForMarker = Regex("""\((\d+)x(\d+)\)""")
 
     private fun String.nextMarker(startIndex: Int = 0): Marker? {
         val match = regexForMarker.find(this, startIndex)
@@ -43,7 +43,6 @@ class Day09 : Day(2016,9) {
             nextMarker?.let {
                 decodedLength += nextMarker.markerRange.first - startIndex
                 startIndex = nextMarker.contentRange.last + 1
-                //length += nextMarker.repetitions * (nextMarker.contentRange.last + 1 - nextMarker.contentRange.first)
                 decodedLength += nextMarker.repetitions * substring(nextMarker.contentRange).decodedLength()
 
             }
