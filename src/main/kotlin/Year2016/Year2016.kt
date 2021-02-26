@@ -17,6 +17,8 @@ class Year2016 : Year(2016) {
         10 to Day10(),
         11 to Day11(),
         12 to Day12(),
-        13 to Day13()
+        13 to Day13(),
+        14 to Day14(),
+        141 to Day14_stolen()
     )
 }
