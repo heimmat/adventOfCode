@@ -7,3 +7,25 @@ fun String.firstRepeatingChar(times: Int): Char? {
 
 }
 fun String.containsRepeatingChar(char: Char, times: Int): Boolean = contains("$char".padStart(times, char))
+
+tailrec fun String.rotateLeft(n: Int = 1): String {
+    val rotateOnce = "${this.drop(1)}${this.first()}"
+    if (n == 0) {
+        return this
+    } else if (n == 1) {
+        return rotateOnce
+    } else {
+        return rotateOnce.rotateLeft(n-1)
+    }
+}
+
+tailrec fun String.rotateRight(n: Int = 1): String {
+    val rotateOnce = "${this.last()}${this.dropLast(1)}"
+    if (n == 0) {
+        return this
+    } else if (n == 1) {
+        return rotateOnce
+    } else {
+        return rotateOnce.rotateRight(n-1)
+    }
+}

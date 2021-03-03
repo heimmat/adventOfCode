@@ -24,6 +24,7 @@ class Year2016 : Year(2016) {
         17 to Day17(),
         18 to Day18(),
         19 to Day19(),
-        20 to Day20()
+        20 to Day20(),
+        21 to Day21()
     )
 }
