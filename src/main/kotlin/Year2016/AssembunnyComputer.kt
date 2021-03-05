@@ -2,16 +2,37 @@ package Year2016
 
 class AssembunnyComputer(val program: List<Instruction>, private val debug: Boolean = false) {
 
+    private val mutableProgram = program.toMutableList()
+
     data class Instruction(val type: Type, val x: String, val y: String? = null) {
         enum class Type {
             CPY,
             INC,
             DEC,
-            JNZ
+            JNZ,
+            TGL
         }
 
         override fun toString(): String {
             return "${type.toString().toLowerCase()} $x ${y ?: ""}"
+        }
+
+        fun toggle(): Instruction {
+            val newType = when (y) {
+                null -> {
+                    when (type) {
+                        Type.INC -> Type.DEC
+                        else -> Type.INC
+                    }
+                }
+                else -> {
+                    when (type) {
+                        Type.JNZ -> Type.CPY
+                        else -> Type.JNZ
+                    }
+                }
+            }
+            return Instruction(newType, x, y)
         }
     }
 
@@ -29,7 +50,7 @@ class AssembunnyComputer(val program: List<Instruction>, private val debug: Bool
      * @return The next instructionPointer
      */
     private fun executeInstruction(instructionPointer: Int): Int {
-        val instruction = program[instructionPointer]
+        val instruction = mutableProgram[instructionPointer]
         when (instruction.type) {
             Instruction.Type.CPY -> {
                 writableRegister[instruction.y!!] = valueOf(instruction.x)
@@ -40,11 +61,16 @@ class AssembunnyComputer(val program: List<Instruction>, private val debug: Bool
             Instruction.Type.DEC -> {
                 writableRegister[instruction.x] = writableRegister[instruction.x]!! - 1
             }
+            Instruction.Type.TGL -> {
+                val toToggle = instructionPointer + valueOf(instruction.x)
+                if (toToggle in program.indices) {
+                    mutableProgram[toToggle] = mutableProgram[toToggle].toggle()
+                }
+            }
         }
 
         return when (instruction.type) {
             Instruction.Type.JNZ -> {
-
                 if (valueOf(instruction.x) != 0) {
                     instructionPointer + valueOf(instruction.y!!)
                 } else {
@@ -60,7 +86,7 @@ class AssembunnyComputer(val program: List<Instruction>, private val debug: Bool
 
     fun run() {
         var instructionPointer = 0
-        while (instructionPointer in program.indices) {
+        while (instructionPointer in mutableProgram.indices) {
             instructionPointer = executeInstruction(instructionPointer)
         }
     }
