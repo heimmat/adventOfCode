@@ -1,8 +1,14 @@
 package Year2016
 
-class AssembunnyComputer(val program: List<Instruction>, private val debug: Boolean = false) {
+class AssembunnyComputer(val program: List<Instruction>, private val debug: Boolean = false, private val onClockSignal: (AssembunnyComputer.(signal: Int) -> Unit)? = null) {
 
     private val mutableProgram = program.toMutableList()
+
+    private var halted = false
+
+    fun halt() {
+        halted = true
+    }
 
     data class Instruction(val type: Type, val x: String, val y: String? = null) {
         enum class Type {
@@ -10,7 +16,8 @@ class AssembunnyComputer(val program: List<Instruction>, private val debug: Bool
             INC,
             DEC,
             JNZ,
-            TGL
+            TGL,
+            OUT
         }
 
         override fun toString(): String {
@@ -67,6 +74,9 @@ class AssembunnyComputer(val program: List<Instruction>, private val debug: Bool
                     mutableProgram[toToggle] = mutableProgram[toToggle].toggle()
                 }
             }
+            Instruction.Type.OUT -> {
+                onClockSignal?.invoke(this, valueOf(instruction.x))
+            }
         }
 
         return when (instruction.type) {
@@ -86,7 +96,7 @@ class AssembunnyComputer(val program: List<Instruction>, private val debug: Bool
 
     fun run() {
         var instructionPointer = 0
-        while (instructionPointer in mutableProgram.indices) {
+        while (instructionPointer in mutableProgram.indices && !halted) {
             instructionPointer = executeInstruction(instructionPointer)
         }
     }
