@@ -1,5 +1,6 @@
 package util
 
+//Inspired by https://www.geeksforgeeks.org/merging-intervals/
 fun <T : Comparable<T>> List<ClosedRange<T>>.merge(): List<ClosedRange<T>> {
     if (isEmpty()) {
         return this
@@ -22,4 +23,19 @@ fun <T : Comparable<T>> List<ClosedRange<T>>.merge(): List<ClosedRange<T>> {
         return stack.toList()
 
     }
+}
+
+fun <T> List<T>.permutate(): List<List<T>> {
+    if (isEmpty()) {
+        return emptyList()
+    } else if (size == 1) {
+        return listOf(this)
+    } else {
+        return flatMap {
+            (this - it).permutate().map { perm ->
+                perm + it
+            }
+        }
+    }
+
 }
