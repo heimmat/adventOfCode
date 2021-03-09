@@ -79,5 +79,12 @@ class Day03 : Day(2017,3) {
             }
         }
 
+        fun neighbors(index: Int): List<Int> {
+            //https://oeis.org/A141481
+            return emptyList()
+        }
+
+
+
     }
 }
