@@ -17,27 +17,38 @@ class Day25 : Day(2016,25) {
 
     override fun part1(): Any {
         var prevClockSignal: Int = 1
-        val onClock: AssembunnyComputer.(Int) -> Unit = {
-            if (it !in 0..1) {
-                halt()
-            }
-            if (it == prevClockSignal) {
-                halt()
-            }
-            prevClockSignal = it
-
-
-        }
-        repeat(500) {
+        val listOfClockSignals = mutableListOf<Int>()
+        var loopDetectedAt: Int = -1
+        repeat(500) { repetition ->
             prevClockSignal = 1
-            println(it)
-            val computer = AssembunnyComputer(program, onClockSignal = onClock)
+            //println(repetition)
+            val computer = AssembunnyComputer(program) {
+                if (it !in 0..1) {
+                    halt()
+                    listOfClockSignals.clear()
+                }
+                if (it == prevClockSignal) {
+                    halt()
+                    listOfClockSignals.clear()
+                }
+                listOfClockSignals.add(it)
+                //println(listOfClockSignals.joinToString(""))
+                prevClockSignal = it
+                if (listOfClockSignals.joinToString("").startsWith("1010101010")) {
+                    halt()
+                    loopDetectedAt = repetition
+                }
+
+            }
             computer.initializeRegister(
-                listOf("a" to it).toMap()
+                listOf("a" to repetition).toMap()
             )
             computer.run()
+            if (loopDetectedAt != -1) {
+                return loopDetectedAt
+            }
             //return computer.register["a"]!!
         }
-        return ""
+        return loopDetectedAt
     }
 }
