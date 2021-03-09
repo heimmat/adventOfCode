@@ -1,5 +1,6 @@
 import Year2015.Year2015
 import Year2016.Year2016
+import year2017.Year2017
 
 open class Year(val year: Int) {
     companion object {
@@ -9,6 +10,7 @@ open class Year(val year: Int) {
                 return when (year) {
                     2015 -> Year2015()
                     2016 -> Year2016()
+                    2017 -> Year2017()
                     else -> TODO()
                 }
             } else {
