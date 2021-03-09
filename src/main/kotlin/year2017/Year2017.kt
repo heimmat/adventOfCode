@@ -5,7 +5,8 @@ import Year
 
 class Year2017: Year(2017) {
     override val days: Map<Int, Day> = mapOf(
-        1 to Day01()
+        1 to Day01(),
+        2 to Day02()
     )
 
 }
