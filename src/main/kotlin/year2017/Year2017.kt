@@ -7,7 +7,8 @@ class Year2017: Year(2017) {
     override val days: Map<Int, Day> = mapOf(
         1 to Day01(),
         2 to Day02(),
-        3 to Day03()
+        3 to Day03(),
+        4 to Day04()
     )
 
 }
