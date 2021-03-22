@@ -14,4 +14,8 @@ class Stack<T>: Collection<T> {
     fun peek(): T? = if (this.isNotEmpty()) mutableList.last() else null
     fun hasMore() = mutableList.isNotEmpty()
     fun toList(): List<T> = mutableList.toList()
+
+    override fun toString(): String {
+        return mutableList.toString()
+    }
 }
