@@ -42,6 +42,9 @@ fun <T> List<T>.permutate(): List<List<T>> {
 
 }
 
+
+fun <T> List<T>.toCircularList(): CircularList<T> = CircularList(this)
+
 tailrec fun List<Number>.geothmeticMeandian(): Double {
     val mean = mean()
     val median = median().toDouble()
