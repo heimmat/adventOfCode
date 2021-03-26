@@ -18,11 +18,24 @@ class Day13 : Day(2017,13) {
                 rangeAtDepth.none { caughtAtTime(it.key + delay, it.value) }
             }.first()*/
 
-        val severities = generateSequence(0 to severityOfTripAtTime(0)) {
+        /*val severities = generateSequence(0 to severityOfTripAtTime(0)) {
             it.first + 1 to severityOfTripAtTime(it.first + 1)
         }
         //return severities.take(20).toList()
-        return severities.first { it.second == 0 && !caughtAtTime(it.first, rangeAtDepth[0]!!)}.also { println(!caughtAtTime(it.first, rangeAtDepth[0]!!)) }
+        return severities.first { it.second == 0 && !caughtAtTime(it.first, rangeAtDepth[0]!!)}.also { println(!caughtAtTime(it.first, rangeAtDepth[0]!!)) }*/
+
+        var delay = 0
+        var passed = false
+        while (!passed) {
+            val passesFirst = canPassFirst(delay)
+            passed = if (passesFirst) {
+                severityOfTripAtTime(delay) == 0
+            } else {
+                passesFirst
+            }
+            delay++
+        }
+        return delay - 1
 
     }
 
@@ -36,12 +49,23 @@ class Day13 : Day(2017,13) {
         }.sum()
     }
 
+    private fun canPassFirst(delay: Int): Boolean {
+        return if (rangeAtDepth.containsKey(0)) {
+            val range = rangeAtDepth[0]!!
+            !caughtAtTime(delay, range)
+        } else {
+            false
+        }
+    }
+
     fun caughtAtTime(time: Int, range: Int): Boolean {
         return positionAtTime(time, range) == 0
     }
 
     private fun positionAtTime(time: Int, depth: Int): Int {
-        return positionsForRange(depth).elementAt(time)
+        //Faster implementation inspired by https://todd.ginsberg.com/post/advent-of-code/2017/day13/
+        return time % ((depth-1)*2)
+        //return positionsForRange(depth).elementAt(time)
     }
 
 
