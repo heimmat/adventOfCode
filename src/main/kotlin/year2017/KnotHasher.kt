@@ -5,12 +5,15 @@ import util.toCircularList
 
 class KnotHasher(private val repetitions: Int = 64, private val listSize: Int = 256) {
 
+    val magicInts = listOf(17, 31, 73, 47, 23)
+
     fun hashInts(ints: List<Int>): String {
+        val actualInts = ints + magicInts
         var circularList = CircularList(0 until listSize)
         var skipSize = 0
         var currentPosition = 0
         repeat(repetitions) {
-            ints.forEach {
+            actualInts.forEach {
                 circularList = circularList.pinchAndTwist(currentPosition, it)
                 currentPosition += it + skipSize
                 skipSize++

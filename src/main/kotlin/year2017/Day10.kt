@@ -20,8 +20,8 @@ class Day10 : Day(2017,10) {
     }
 
     override fun part2(): Any {
-        val suffix = listOf(17, 31, 73, 47, 23)
-        val inputLengths = inputLengths.map { it.toInt() } + suffix
-        return KnotHasher().hashInts(inputLengths)
+        //val suffix = listOf(17, 31, 73, 47, 23)
+       // val inputLengths = inputLengths.map { it.toInt() } + suffix
+        return KnotHasher().hashInts(inputLengths.map { it.toInt() })
     }
 }
