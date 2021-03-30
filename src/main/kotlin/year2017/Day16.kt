@@ -20,8 +20,8 @@ class Day16 : Day(2017,16) {
     }
 
     private fun detectLoop(initialDancers: List<Char>, moves: List<String>): Pair<Int,Int> {
-        val seenStates = mutableSetOf<List<Char>>(dancers)
-        var newState = executeAllMoves(dancers, moves)
+        val seenStates = mutableSetOf(initialDancers)
+        var newState = executeAllMoves(initialDancers, moves)
         var iterator = 1
         while (newState !in seenStates) {
             seenStates.add(newState)
