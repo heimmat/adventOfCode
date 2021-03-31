@@ -14,6 +14,12 @@ class Day17 : Day(2017,17) {
         }.map { it.first }
     }
 
+    private fun insertPositions(stepsForward: Int): Sequence<Int> {
+        return generateSequence(1 to 0) {
+            (it.first + 1) to (((it.second + stepsForward) % it.first) + 1)
+        }.map { it.second }
+    }
+
     override fun part1(): Any {
         val bufferAt2017 = getSequence(stepsForward).elementAt(2017)
         val indexOf2017 = bufferAt2017.indexOf(2017)
@@ -21,9 +27,7 @@ class Day17 : Day(2017,17) {
     }
 
     override fun part2(): Any {
-        val buffer = getSequence(stepsForward).elementAt(50_000_000)
-        val index = buffer.indexOf(0)
-        return buffer[(index + 1) % buffer.size]
+        return insertPositions(stepsForward).take(50_000_000).indexOfLast { it == 1 }
     }
 
 
