@@ -6,7 +6,6 @@ import util.times
 import kotlin.math.abs
 
 class Day20 : Day(2017,20) {
-
     private val testParticles = listOf(
         "p=< 3,0,0>, v=< 2,0,0>, a=<-1,0,0>",
         "p=< 4,0,0>, v=< 0,0,0>, a=<-2,0,0>"
@@ -18,7 +17,7 @@ class Day20 : Day(2017,20) {
         val setOfOrders = mutableListOf<List<Particle>>()
         var tick = 0
         var particlesByDistance: List<Particle> =particles.orderByDistanceAtTick(tick)
-        while (setOfOrders.isEmpty() || particlesByDistance != setOfOrders.last() || tick < 20) {
+        while (setOfOrders.isEmpty() || particlesByDistance != setOfOrders.last() || tick < 10) {
             setOfOrders.add(particlesByDistance)
             tick++
             particlesByDistance = particles.orderByDistanceAtTick(tick)
@@ -27,9 +26,35 @@ class Day20 : Day(2017,20) {
 
     }
 
+    override fun part2(): Any {
+        val testParticles = listOf(
+            "p=<-6,0,0>, v=< 3,0,0>, a=< 0,0,0>",
+            "p=<-4,0,0>, v=< 2,0,0>, a=< 0,0,0>",
+            "p=<-2,0,0>, v=< 1,0,0>, a=< 0,0,0>",
+            "p=< 3,0,0>, v=<-1,0,0>, a=< 0,0,0>"
+        ).map { parseParticle(it) }
+        var particles = particles
+        var tick = 0
+        var collisionsRemoved = particles.removeCollision(tick)
+        while (particles != collisionsRemoved || tick < 100) {
+            particles = collisionsRemoved
+            tick++
+            collisionsRemoved = particles.removeCollision(tick)
+        }
+        return particles.size
+    }
+
     fun List<Particle>.orderByDistanceAtTick(tick: Int) = this.sortedBy {
         val position = it.positionAtTick(tick)
         abs(position.first) + abs(position.second) + abs(position.third)
+    }
+
+    fun List<Particle>.removeCollision(tick: Int): List<Particle> {
+        val grouped = this.groupBy {
+            it.positionAtTick(tick)
+        }
+        val collisions = grouped.filter { it.value.size > 1 }.flatMap { it.value }
+        return this - collisions
     }
 
     private fun parseParticle(input: String): Particle {
