@@ -8,6 +8,28 @@ fun <T> Collection<Collection<T>>.flipHorizontally(): Collection<Collection<T>> 
 
 fun <T> Collection<Collection<T>>.flipVertically(): Collection<Collection<T>> = this.reversed()
 
+fun <T> Collection<Collection<T>>.rotate(direction: Rotation, times: Int = 1): Collection<Collection<T>> {
+    return when (times % 4) {
+        0 -> this
+        1 -> rotate(direction)
+        2 -> map { it.reversed() }.reversed()
+        3 -> {
+            when (direction) {
+                Rotation.LEFT -> rotateRight()
+                Rotation.RIGHT -> rotateLeft()
+            }
+        }
+        else -> throw IllegalStateException()
+    }
+}
+
+fun <T> Collection<Collection<T>>.rotate(direction: Rotation): Collection<Collection<T>> {
+    return when (direction) {
+        Rotation.LEFT -> rotateLeft()
+        Rotation.RIGHT -> rotateRight()
+    }
+}
+
 fun <T> Collection<Collection<T>>.rotateRight(): Collection<Collection<T>> = transpose().map { it.reversed() }
 
 fun <T> Collection<Collection<T>>.rotateLeft(): Collection<Collection<T>> = map { it.reversed() }.transpose()
