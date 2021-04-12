@@ -1,6 +1,7 @@
 package year2017
 
 import Day
+import util.*
 
 class Day21 : Day(2017,21) {
 
@@ -8,16 +9,64 @@ class Day21 : Day(2017,21) {
         ".#.",
         "..#",
         "###"
-    ).map { it.toCharArray() }
+    ).map { it.toList() }
+
+    val testTransformations = listOf(
+        "../.# => ##./#../...",
+        ".#./..#/### => #..#/..../..../#..#"
+    ).map { Transformation(it) }
+
+    val transformations = input.asList.filterNotEmpty().map {
+        Transformation(it)
+    }
+
+    fun iterate(inputPattern: Collection<Collection<Char>>, transformations: List<Transformation>): Collection<Collection<Char>> {
+        val sizeOfPattern = inputPattern.size
+        val blocks = when {
+            sizeOfPattern % 2 == 0 -> {
+                inputPattern.splitBlocks(2)
+            }
+            sizeOfPattern % 3 == 0 -> {
+                inputPattern.splitBlocks(3)
+            }
+            else -> throw IllegalStateException()
+        }
+        return blocks.map { row ->
+            row.map { block ->
+                try {
+                    val firstMatchingTransformation = transformations.first { it.matchesAnyOrientation(block) }
+                    firstMatchingTransformation.replaceWith
+                } catch (e: NoSuchElementException) {
+                    println(block.orientations().map {
+                        it.joinToString("/") {
+                            it.joinToString("")
+                        }
+                    })
+                    throw e
+                }
+
+            }
+        }.mergeBlocks()
+    }
 
     override fun part1(): Any {
-        val test = listOf(
-            listOf(0, 1, 2, 3),
-            listOf(4, 5, 6, 7),
-            listOf(8, 9, 10, 11),
-            listOf(12, 13, 14, 15)
-        )
-        return test.splitBlocks(2).mergeBlocks()
+        var pattern: Collection<Collection<Char>> = startPattern
+        repeat(5) {
+            pattern = iterate(pattern, transformations)
+        }
+        return pattern.sumBy {
+            it.count { it.isOn }
+        }
+    }
+
+    override fun part2(): Any {
+        var pattern: Collection<Collection<Char>> = startPattern
+        repeat(18) {
+            pattern = iterate(pattern, transformations)
+        }
+        return pattern.sumBy {
+            it.count { it.isOn }
+        }
     }
 
     private val Char.isOn: Boolean get() = this == '#'
@@ -49,6 +98,28 @@ class Day21 : Day(2017,21) {
             rows.addAll(test)
         }
         return rows
+    }
+
+    fun Collection<Collection<Char>>.print(): String {
+        return joinToString("\n") {
+            it.joinToString("")
+        }
+    }
+
+
+
+    class Transformation(ruleString: String) {
+        val pattern = ruleString.substringBefore(" => ").split("/").map { it.toList() }
+        val replaceWith = ruleString.substringAfter(" => ").split("/").map { it.toList() }
+
+        fun matches(test: Collection<Collection<Char>>) = test == pattern
+        fun matchesAnyOrientation(test: Collection<Collection<Char>>): Boolean {
+            return test.orientations().any { it == pattern }
+        }
+
+        override fun toString(): String {
+            return (pattern to replaceWith).toString()
+        }
     }
 
 }

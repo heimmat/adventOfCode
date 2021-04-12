@@ -55,3 +55,18 @@ fun <T> Collection<Collection<T>>.transpose(): Collection<Collection<T>> {
     }
     return rows
 }
+
+fun <T> Collection<Collection<T>>.orientations(): List<Collection<Collection<T>>> {
+    return listOf(
+        this,
+        rotate(Rotation.LEFT),
+        rotate(Rotation.LEFT,2),
+        rotate(Rotation.RIGHT),
+        flipHorizontally(),
+        flipVertically(),
+        transpose(),
+        rotate(Rotation.LEFT).flipHorizontally(),
+        rotate(Rotation.LEFT,2).flipHorizontally(),
+        rotate(Rotation.RIGHT).flipHorizontally(),
+    )
+}
