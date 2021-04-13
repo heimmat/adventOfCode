@@ -18,6 +18,14 @@ class Day23 : Day(2017,23) {
         return counter
     }
 
+    //Analysis by https://todd.ginsberg.com/post/advent-of-code/2017/day23/
+    override fun part2(): Any {
+        val a = program.first().y.toInt() * 100 + 100000
+        return (a .. a+17000 step 17).count {
+            !it.toBigInteger().isProbablePrime(5)
+        }
+    }
+
     class Computer {
         private val mutableRegister = mutableMapOf<Char, Int>()
         val register: Map<Char,Int> get() = mutableRegister.toMap()
