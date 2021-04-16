@@ -23,6 +23,10 @@ class Day24 : Day(2017,24) {
         return findBridges(components, emptyList(), 0).maxOf { it.sumBy { it.strength } }
     }
 
+    override fun part2(): Any {
+        return findBridges(components).groupBy { it.size }.maxByOrNull { it.key }?.value?.maxOf { it.sumBy { it.strength } } ?: "null"
+    }
+
     fun findMatches(components: List<Component>, bridge: List<Component>, port: Int): List<Component> {
         return components.filterNot { it in bridge }
             .filter { it.fits(port) }
