@@ -28,7 +28,8 @@ class Year2017: Year(2017) {
         21 to Day21(),
         22 to Day22(),
         23 to Day23(),
-        24 to Day24()
+        24 to Day24(),
+        25 to Day25()
     )
 
 }
