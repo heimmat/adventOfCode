@@ -15,34 +15,46 @@ class Day24 : Day(2017,24) {
         "9/10"
     )
 
-    val components = testComponents//input.asList
+    val components = input.asList
         .map { it.split("/").map { it.toInt() } }
-        .map { it[0] to it[1] }
-
-    private val startingComponents = components.filter { it.first == 0 }
-
-    fun findMatches(bridge: Set<Pair<Int,Int>>): List<Pair<Int,Int>> {
-        return components.filterNot { it in bridge }.filter { it.first == bridge.last().second || it.second == bridge.last().second }
-    }
-
-    fun findBridges(bridge: Set<Pair<Int, Int>>): List<Set<Pair<Int,Int>>> {
-        println("bridge is $bridge")
-        val openMatches = findMatches(bridge)
-        if (openMatches.isNotEmpty()) {
-            return openMatches.flatMap {
-                findBridges(bridge + it)
-            }
-        } else {
-            return listOf(bridge)
-        }
-
-    }
+        .map { Component(it[0], it[1]) }
 
     override fun part1(): Any {
-        return startingComponents.flatMap {
-            findBridges(setOf(it))
+        return findBridges(components, emptyList(), 0).maxOf { it.sumBy { it.strength } }
+    }
+
+    fun findMatches(components: List<Component>, bridge: List<Component>, port: Int): List<Component> {
+        return components.filterNot { it in bridge }
+            .filter { it.fits(port) }
+    }
+
+    fun findBridges(components: List<Component>, bridge: List<Component> = emptyList(), port: Int = 0): List<List<Component>> {
+        val matches = findMatches(components, bridge, port)
+        return if (matches.isEmpty()) {
+            listOf(bridge)
+        } else {
+            matches.flatMap {
+                findBridges(components, bridge + it, it.oppositeSide(port))
+            }
         }
     }
 
-    val Pair<Int,Int>.strength: Int get() = first + second
+
+    class Component(val x: Int, val y: Int) {
+        fun fits(port: Int) = x == port || y == port
+        val strength = x + y
+
+        fun oppositeSide(port: Int): Int {
+            return when {
+                port == x -> y
+                port == y -> x
+                else -> throw IllegalArgumentException()
+            }
+        }
+
+        override fun toString(): String {
+            return "$x/$y"
+        }
+    }
+
 }
