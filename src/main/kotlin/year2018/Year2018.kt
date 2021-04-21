@@ -6,7 +6,8 @@ import Year
 class Year2018 : Year(2018) {
     override val days: Map<Int, Day> = mutableMapOf(
         1 to Day01(),
-        2 to Day02()
+        2 to Day02(),
+        3 to Day03()
     )
 
 }
