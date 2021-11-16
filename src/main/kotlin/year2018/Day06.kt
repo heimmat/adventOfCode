@@ -3,6 +3,8 @@ package year2018
 import Day
 import util.manhattanDistanceTo
 import util.toRange
+import util.x
+import util.y
 
 class Day06 : Day(2018,6) {
     val testInput = listOf(
@@ -33,6 +35,16 @@ class Day06 : Day(2018,6) {
         return coordinates.filterNot { it.isEdge() }.map { coordinate ->
             pointsSearched.count { it.value?.equals(coordinate) ?: false }
         }.maxOf { it }
+    }
+
+    override fun part2(): Any {
+        var counter = 0
+        for (y in coordinates.map { it.y }.toRange()) {
+            for (x in coordinates.map { it.x }.toRange()) {
+                if ((x to y).inRegion()) counter++
+            }
+        }
+        return counter
     }
 
 
@@ -66,6 +78,10 @@ class Day06 : Day(2018,6) {
             twoClosest[0].first
         }
 
+    }
+
+    private fun Pair<Int,Int>.inRegion(): Boolean {
+        return distances().sumBy { it.second } < 10000
     }
 
 
