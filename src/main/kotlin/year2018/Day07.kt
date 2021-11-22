@@ -34,6 +34,10 @@ class Day07 : Day(2018,7) {
         charRange.filterNot { it in finishedTasks || it in availableTasks() }.toSet()
     }
 
+    val nextTask: () -> Char = {
+        availableTasks().sorted().first()
+    }
+
     override fun part1(): Any {
         //find task not in requirements
 //        println("tasksWithoutPredecessor: $tasksWithoutPredecessor")
@@ -62,6 +66,11 @@ class Day07 : Day(2018,7) {
         val workerCount = if (debug) 2 else 5
         fun timeForTask(task: Char): Int {
             return baseDuration + charRange.indexOf(task)
+        }
+
+        var tick = 0
+        while (finishedTasks.size < charRange.count() - 1 && availableTasks().isNotEmpty()) {
+
         }
 
         println("Time for task C: ${timeForTask('C')}")
