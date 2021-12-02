@@ -2,10 +2,11 @@ import Year2015.Year2015
 import Year2016.Year2016
 import year2017.Year2017
 import year2018.Year2018
+import year2021.Year2021
 
 open class Year(val year: Int) {
     companion object {
-        val supportedYears = 2015..2020
+        val supportedYears = 2015..2021
         fun fromInt(year: Int): Year {
             if (year in supportedYears) {
                 return when (year) {
@@ -13,6 +14,7 @@ open class Year(val year: Int) {
                     2016 -> Year2016()
                     2017 -> Year2017()
                     2018 -> Year2018()
+                    2021 -> Year2021()
                     else -> TODO()
                 }
             } else {
