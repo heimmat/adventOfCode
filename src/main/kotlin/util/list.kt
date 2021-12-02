@@ -76,3 +76,5 @@ fun List<Number>.geometricMean(): Double {
     }
     return product.pow(1.0/size)
 }
+
+fun List<Int>.toRange(): IntRange = this.minOf { it }..this.maxOf { it }
