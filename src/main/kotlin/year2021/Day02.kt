@@ -30,4 +30,28 @@ class Day02: Day(2021,2) {
         }
         return position.first * position.second
     }
+
+    override fun part2(): Any {
+        var aim = 0
+        var position = 0 to 0
+        input.asList.forEach {
+            val split = it.split(" ")
+            when (split.first()) {
+                "forward" -> {
+                    val value = split.last().toInt()
+                    position += value to aim * value
+                }
+                "down" -> {
+                    aim += split.last().toInt()
+                }
+                "up" -> {
+                    aim -= split.last().toInt()
+                }
+                else -> {
+                    throw IllegalArgumentException()
+                }
+            }
+        }
+        return position.first * position.second
+    }
 }
