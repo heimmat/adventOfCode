@@ -2,8 +2,7 @@ package year2018
 
 import Day
 
-class Day07 : Day(2018,7) {
-    val debug = true
+class Day07 : Day(2018,7, true) {
     val testInput = """
         Step C must be finished before step A can begin.
         Step C must be finished before step F can begin.
