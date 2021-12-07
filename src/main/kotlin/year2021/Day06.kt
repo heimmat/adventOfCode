@@ -16,6 +16,31 @@ class Day06(debug: Boolean = false): Day(2021,6, debug) {
 
     }
 
+    private fun fishCountAtTime(initialFishes: List<Int>, time: Int): Long {
+        //With a little help from Todd Ginsberg https://todd.ginsberg.com/post/advent-of-code/2021/day6/
+        fun List<Long>.reproduce(): List<Long> {
+            val reproducing = this.first()
+            val rest = this.drop(1).toMutableList()
+            rest[6] += reproducing
+            rest.add(reproducing)
+            return rest
+        }
+
+        val timeBasedRepresentation = initialFishes.groupBy { it }.map { it.key to it.value.size }.toMap()
+        val fishesInState = List<Long>(9) { index ->
+            timeBasedRepresentation[index]?.toLong() ?: 0L
+        }
+        var state = fishesInState
+        repeat(time) {
+            state = state.reproduce()
+        }
+        return state.sum()
+
+
+
+
+    }
+
     override fun part1(): Any {
         var fishes = initialState
         repeat(80) {
@@ -25,6 +50,10 @@ class Day06(debug: Boolean = false): Day(2021,6, debug) {
             }
         }
         return fishes.size
+    }
+
+    override fun part2(): Any {
+        return fishCountAtTime(initialState, 256)
     }
 
 }
