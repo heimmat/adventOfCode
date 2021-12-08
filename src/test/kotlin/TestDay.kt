@@ -3,8 +3,6 @@ import kotlin.test.assertEquals
 
 abstract class TestDay(val day: Day) {
     abstract val results: Pair<Any,Any>
-    protected open val input = day.input
-
     @Test
     fun testPart1() {
         assertEquals(results.first, day.part1())
