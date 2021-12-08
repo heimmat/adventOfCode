@@ -4,7 +4,7 @@ open class Day(val year: Int, val day: Int, val debug: Boolean = false) {
         val supportedDays = 1..25
     }
 
-    val input = Input(year,day)
+    protected val input = Input(year,day)
     //protected val inputAsString by lazy { input.asString() }
     //protected val inputAsList by lazy { input.asList() }
     open fun part1(): Any = TODO()
