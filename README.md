@@ -15,6 +15,7 @@ To implement a new year, add a new package named after the year.
 Implement a new `Year` subclass and add your implemented days to the `days` map.
 For each new day, implement a `Day` subclass and override the `part1` and `part2` functions. 
 For testing purposes, accept a parameter `debug` and pass it to the super class.
+The day's input can be read as a String or already split on line terminators.
 
 ## Testing
 Implement a subclass of TestDay and override the results field.
