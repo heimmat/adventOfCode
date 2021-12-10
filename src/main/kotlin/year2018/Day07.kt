@@ -2,7 +2,7 @@ package year2018
 
 import Day
 
-class Day07 : Day(2018,7, true) {
+class Day07(debug: Boolean = false) : Day(2018,7, debug) {
     val testInput = """
         Step C must be finished before step A can begin.
         Step C must be finished before step F can begin.
@@ -22,7 +22,7 @@ class Day07 : Day(2018,7, true) {
     val charRange = 'A'..highestChar
     val tasksWithoutPredecessor = charRange.filter { it !in inputSimplified.toMap().keys }
 
-    val finishedTasks = mutableSetOf<Char>()
+    var finishedTasks = mutableSetOf<Char>()
     val tasksWithFinishedPredecessor: () -> Set<Char> = {
         taskDependencyGraph.filter { it.value.all { it in finishedTasks } }.keys.filterNot { it in finishedTasks }.toSet()
     }
@@ -33,9 +33,6 @@ class Day07 : Day(2018,7, true) {
         charRange.filterNot { it in finishedTasks || it in availableTasks() }.toSet()
     }
 
-    val nextTask: () -> Char = {
-        availableTasks().sorted().first()
-    }
 
     override fun part1(): Any {
         //find task not in requirements
@@ -61,19 +58,56 @@ class Day07 : Day(2018,7, true) {
     }
 
     override fun part2(): Any {
+        finishedTasks = mutableSetOf()
         val baseDuration = if (debug) 1 else 61
         val workerCount = if (debug) 2 else 5
         fun timeForTask(task: Char): Int {
             return baseDuration + charRange.indexOf(task)
         }
-
-        var tick = 0
-        while (finishedTasks.size < charRange.count() - 1 && availableTasks().isNotEmpty()) {
-
+        val workers = MutableList(workerCount) {
+            '.' to -1
         }
 
-        println("Time for task C: ${timeForTask('C')}")
-        return 1
+
+
+        fun freeWorker(): Int {
+            return workers.indexOfFirst { it.first == '.' }
+        }
+        fun tasksInProgress(): Set<Char> {
+            return workers.map { it.first }.filterNot { it == '.' }.toSet()
+        }
+
+        val nextTask: () -> Char? = {
+            availableTasks().filterNot { it in tasksInProgress() }.sorted().firstOrNull()
+        }
+        var tick = 0
+        val whileCondition: () -> Boolean = { finishedTasks.size < charRange.count() }
+        while ( whileCondition()/*&& availableTasks().isNotEmpty()*/) {
+            if (debug) println("Tick $tick")
+            if (debug) println("Workers before replacement $workers")
+            workers.replaceAll {
+                if (tick - it.second == timeForTask(it.first)) {
+                    finishedTasks.add(it.first)
+                    '.' to -1
+                } else {
+                    it
+                }
+
+            }
+            if (debug) println("Workers after replacement $workers")
+            if (debug) println("Finished tasks $finishedTasks")
+            while (freeWorker() != -1 && nextTask() != null) {
+                val indexOfFreeWorker = freeWorker()
+                if (debug) println("Found free worker $indexOfFreeWorker")
+                workers[indexOfFreeWorker] = nextTask()!! to tick
+                if (debug) println("assigned worker $indexOfFreeWorker task ${workers[indexOfFreeWorker]}")
+            }
+            tick++
+            if (debug) println("while evaluates to ${whileCondition()}")
+        }
+
+
+        return tick
     }
 
 
