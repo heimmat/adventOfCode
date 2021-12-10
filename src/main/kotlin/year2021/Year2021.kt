@@ -13,7 +13,8 @@ class Year2021: Year(2021) {
         6 to Day06(),
         7 to Day07(),
         8 to Day08(),
-        9 to Day09()
+        9 to Day09(),
+        10 to Day10()
     )
 
 }
