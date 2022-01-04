@@ -1,7 +1,7 @@
 package year2021
 
 import Day
-import util.toRange
+import kotlin.math.abs
 
 class Day13(debug: Boolean = false): Day(2021, 13, debug) {
     private val testInput = """
@@ -40,13 +40,13 @@ class Day13(debug: Boolean = false): Day(2021, 13, debug) {
 
     fun Collection<Pair<Int,Int>>.foldX(xToFold: Int): Collection<Pair<Int,Int>> {
         return this.map {
-            Math.abs(xToFold - it.first) to it.second
+            xToFold - abs(xToFold - it.first) to it.second
         }.toSet()
     }
 
     fun Collection<Pair<Int,Int>>.foldY(yToFold: Int): Collection<Pair<Int,Int>> {
         return this.map {
-            it.first to Math.abs(yToFold - it.second)
+            it.first to yToFold - abs(yToFold - it.second)
         }.toSet()
     }
 
@@ -85,12 +85,13 @@ class Day13(debug: Boolean = false): Day(2021, 13, debug) {
     override fun part2(): Any {
         var points: Collection<Pair<Int,Int>> = points
         instructions.forEach {
+            if (debug) println("\n${points.print()}")
+            if (debug) println(it)
             points = points.foldPaper(it)
+            if (debug) println("==>")
+            if (debug) println(points.print())
         }
-
-
-
-        return "\n${points.print()}"
+        return points.print().trim()
 
     }
 

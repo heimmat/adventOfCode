@@ -6,7 +6,13 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class TrainingDay13: TestDay(Day13(true)) {
-    override val results: Pair<Any, Any> = 17 to Any()
+    override val results: Pair<Any, Any> = 17 to """
+        #####
+        #...#
+        #...#
+        #...#
+        #####
+    """.trimIndent()
     private val day13: Day13 = this.day as Day13
 
     private val testPoints = """  
