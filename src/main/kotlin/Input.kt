@@ -16,6 +16,9 @@ class Input(val year: Int, val day: Int) {
         if (!(fileInfo.exists() && fileInfo.canRead())) {
             val httpClient = HttpClient()
             val inputFromBackend = httpClient.get("https://adventofcode.com/$year/day/$day/input")
+            if (inputFromBackend.trim() == "Puzzle inputs differ by user.  Please log in to get your puzzle input.") {
+                throw RuntimeException("Your session key seems to be expired.")
+            }
             fileInfo.writeText(inputFromBackend)
         }
         return fileInfo
