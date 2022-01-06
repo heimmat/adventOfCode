@@ -18,7 +18,8 @@ class Year2021: Year(2021) {
         11 to Day11(),
         12 to Day12(),
         13 to Day13(),
-        14 to Day14()
+        14 to Day14(),
+        15 to Day15()
     )
 
 }
