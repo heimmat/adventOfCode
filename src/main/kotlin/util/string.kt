@@ -29,3 +29,7 @@ tailrec fun String.rotateRight(n: Int = 1): String {
         return rotateOnce.rotateRight(n-1)
     }
 }
+
+fun String.convertFromHexToBinary(): String = this.map {
+    "$it".toLong(16).toString(2).padStart(4, '0')
+}.joinToString("")
