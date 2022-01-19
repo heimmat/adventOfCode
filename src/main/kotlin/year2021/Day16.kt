@@ -53,7 +53,7 @@ class Day16(debug: Boolean = false): Day(2021,16, debug) {
     }
 
 
-
+    //https://todd.ginsberg.com/post/advent-of-code/2021/day16/
 
     sealed class BITS(val version: Int, val type: Int) {
 
