@@ -11,7 +11,7 @@ import kotlin.test.assertEquals
 class TrainingDay17: TestDay(Day17(true)) {
 
     override val results: Pair<Any, Any>
-        get() = 45 to Any()
+        get() = 45 to 112
 
     val day17 = day as Day17
     @Test

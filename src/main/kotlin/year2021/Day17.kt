@@ -4,6 +4,7 @@ import Day
 import util.plus
 import util.x
 import util.y
+import kotlin.math.absoluteValue
 
 class Day17(debug: Boolean = false): Day(2021,17, debug) {
 
@@ -43,16 +44,54 @@ class Day17(debug: Boolean = false): Day(2021,17, debug) {
         }
     }
 
-    fun Sequence<Pair<Int,Int>>.takeWhileMovingInX(): Sequence<Pair<Int,Int>> {
+    fun Sequence<Pair<Int,Int>>.takeWhileMovingInXOrInRange(xRange: IntRange, yRange: IntRange): Sequence<Pair<Int,Int>> {
         var last: Pair<Int,Int>? = null
         return this.takeWhile {
             val different = last?.x != it.x
             last = it
-            different
+            different || it.x in xRange
         }
     }
 
-    override fun part1(): Any {
-        return trajectoryFromInitialVelocity(7 to 2).takeWhileRangePossible(xRange = targetXRange, yRange = targetYRange).takeWhileMovingInX().toList()
+    fun Sequence<Pair<Int,Int>>.takeWhileMovingAndPossible(xRange: IntRange, yRange: IntRange): List<Pair<Int,Int>> {
+        return this.takeWhileRangePossible(xRange, yRange)
+            .takeWhileMovingInXOrInRange(xRange, yRange)
+            .toList()
     }
+
+    val possibleInitialVelocities = run {
+        val sequenceOfInitialVelocities = sequence {
+            for (x in 1..this@Day17.targetXRange.last) {
+                for (y in this@Day17.targetYRange.first..this@Day17.targetYRange.first.absoluteValue) {
+                    this.yield(x to y)
+                }
+            }
+        }
+        val range = sequence {
+            for (x in this@Day17.targetXRange) {
+                for (y in this@Day17.targetYRange) {
+                    this.yield(x to y)
+                }
+            }
+        }
+        sequenceOfInitialVelocities
+            .map {
+                trajectoryFromInitialVelocity(it)
+                    .takeWhileMovingAndPossible(xRange = targetXRange, yRange = targetYRange)
+            }
+            .filter { it.isNotEmpty() }
+            .filter { it.any { it in range } }
+    }
+
+    override fun part1(): Any {
+        return possibleInitialVelocities.maxOf {
+            it.maxOf{ it.y }
+        }
+
+    }
+
+    override fun part2(): Any {
+        return possibleInitialVelocities.toList().size
+    }
+
 }
