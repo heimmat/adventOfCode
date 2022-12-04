@@ -77,6 +77,8 @@ class AssembunnyComputer(val program: List<Instruction>, private val debug: Bool
             Instruction.Type.OUT -> {
                 onClockSignal?.invoke(this, valueOf(instruction.x))
             }
+
+            else -> {}
         }
 
         return when (instruction.type) {

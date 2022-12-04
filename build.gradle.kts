@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions.useIR = true
+//compileKotlin.kotlinOptions.useIR = true
 
 plugins {
-    kotlin("jvm") version "1.4.30"
+    kotlin("jvm") version "1.7.20"
     id("com.github.johnrengelman.shadow") version "6.1.0"
     application
 }

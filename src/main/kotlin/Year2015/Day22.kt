@@ -49,6 +49,8 @@ class Day22: Day(2015,22) {
                         manaLeft += 101
                         if (debug) println("Recharged 101 mana -> manaLeft: $manaLeft")
                     }
+
+                    else -> {}
                 }
 
             }
