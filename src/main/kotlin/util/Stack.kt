@@ -1,8 +1,8 @@
 package util
 
-class Stack<T>: Collection<T> {
+class Stack<T>(initial: List<T> = listOf()): Collection<T> {
 
-    private val mutableList: MutableList<T> = mutableListOf()
+    private val mutableList: MutableList<T> = initial.toMutableList()
     override val size: Int get() = mutableList.size
     override fun contains(element: T): Boolean = mutableList.contains(element)
     override fun containsAll(elements: Collection<T>): Boolean = mutableList.containsAll(elements)
