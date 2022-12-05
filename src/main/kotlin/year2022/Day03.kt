@@ -38,6 +38,16 @@ CrZsJsPPZsGzwwsLwLmpwMDw
         }
     }
 
+    override fun part2(): Any {
+        return rucksacks.map {
+            it.first + it.second
+        }.windowed(3,3).map { triple ->
+            triple.first().first {
+                it in triple[1] && it in triple[2]
+            }.priority()
+        }.sum()
+    }
+
     //operator fun Char.minus(that: Char): Int = this.code - that.code
 
 }
