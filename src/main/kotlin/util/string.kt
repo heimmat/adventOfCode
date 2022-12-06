@@ -33,3 +33,11 @@ tailrec fun String.rotateRight(n: Int = 1): String {
 fun String.convertFromHexToBinary(): String = this.map {
     "$it".toLong(16).toString(2).padStart(4, '0')
 }.joinToString("")
+
+fun String.indexOfStartOfNDistinctChars(n: Int): Int {
+    return this.windowed(n).indexOfFirst {
+        it.fold(setOf<Char>()) { acc, c ->
+            acc + c
+        }.size == n
+    }
+}
