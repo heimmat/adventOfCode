@@ -3,7 +3,7 @@ package year2022
 import Day
 import util.Stack
 
-class Day05(debug: Boolean = false): Day(2022,5) {
+class Day05(debug: Boolean = false): Day(2022,5, debug) {
     private val testInput = """
     [D]    
 [N] [C]    
@@ -44,7 +44,7 @@ move 1 from 1 to 2
         val stacks = stacks
         for (inst in instructions) {
             repeat(inst.amount) {
-                println("move ${stacks[inst.from - 1].peek()} from stack ${inst.from} to stack ${inst.to}")
+                if (debug) println("move ${stacks[inst.from - 1].peek()} from stack ${inst.from} to stack ${inst.to}")
                 stacks[inst.to - 1].push(stacks[inst.from - 1].pop()!!)
             }
         }
@@ -52,13 +52,13 @@ move 1 from 1 to 2
     }
 
     override fun part2(): Any {
-        println(stacks)
+        if (debug) println(stacks)
         val stacks  = stacks
         for (inst in instructions) {
-            println(inst)
+            if (debug) println(inst)
             val buffer = Stack<Char>()
             repeat(inst.amount) {
-                println("will pull ${stacks[inst.from - 1].peek()}")
+                if (debug) println("will pull ${stacks[inst.from - 1].peek()}")
                 buffer.push(stacks[inst.from - 1].pop()!!)
             }
             while (buffer.hasMore()) {
@@ -74,7 +74,6 @@ move 1 from 1 to 2
         companion object {
             fun parse(s: String): Instruction {
                 val split = s.split(" ")
-                if (split.size != 5) println(s)
                 val amount = split[1].toInt()
                 val from = split[3].toInt()
                 val to = split[5].toInt()
