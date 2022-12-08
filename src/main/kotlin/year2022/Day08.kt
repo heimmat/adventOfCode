@@ -41,12 +41,12 @@ class Day08(debug: Boolean = false): Day(2022,8,debug) {
     }
 
     fun <T> Map<Pair<Int,Int>,T>.neighborsInXDescending(coordinate: Pair<Int, Int>): List<T> {
-        return (0 until (coordinate.first)).map { x ->
+        return (0 until (coordinate.first)).reversed().map { x ->
             this[x to coordinate.second]!!
         }
     }
     fun <T> Map<Pair<Int,Int>,T>.neighborsInYDescending(coordinate: Pair<Int, Int>): List<T> {
-        return (0 until (coordinate.second)).map { y ->
+        return (0 until (coordinate.second)).reversed().map { y ->
             this[coordinate.first to y]!!
         }
     }
@@ -70,10 +70,57 @@ class Day08(debug: Boolean = false): Day(2022,8,debug) {
         return if (height == null) {
             throw IllegalArgumentException("$coordinate out of bounds")
         } else {
-            val height: Int = height
             neighbors.all { it < height }
 
         }
+    }
+
+    fun Map<Pair<Int,Int>,Int>.viewingDistance(coordinate: Pair<Int, Int>, neighbors: List<Int>): Int {
+        val height = this[coordinate]
+        return if (height == null) {
+            throw IllegalArgumentException("$coordinate out of bounds")
+        } else {
+            val neighborsSmaller = neighbors.takeWhile { it < height }
+            if (neighborsSmaller.size < neighbors.size) {
+                (neighborsSmaller + neighbors[neighborsSmaller.size]).count()
+            } else {
+                neighborsSmaller.count()
+            }
+            /*
+            val visibleNeighbors = mutableListOf<Int>()
+            neighbors.firstOrNull()?.let {
+                if (debug) println("firstNeighbor is $it")
+                visibleNeighbors.add(it)
+            }
+            var index = 1
+            while (visibleNeighbors.isNotEmpty() && visibleNeighbors.last() < height && index < neighbors.size) {
+                if (debug) println("last neighbor ${visibleNeighbors.last()}, next ${neighbors[index]}")
+                visibleNeighbors.add(neighbors[index])
+                index++
+            }
+            visibleNeighbors.size
+            */
+        }
+    }
+
+    fun Map<Pair<Int,Int>,Int>.scenicScore(coordinate: Pair<Int, Int>): Int {
+        if (lowestX == lowestY && highestX == highestY) {
+            return listOf(
+                neighborsInYDescending(coordinate),
+                neighborsInXDescending(coordinate),
+                neighborsInYAscending(coordinate),
+                neighborsInXAscending(coordinate),
+            ).map {
+                viewingDistance(coordinate, it)
+                    .also { if (debug) println("Viewing distance for $coordinate: $it") }
+            }.reduce { acc, i -> acc*i }.also { if (debug) println("Score for $coordinate is $it") }
+        } else {
+            throw IllegalArgumentException("Map must be square")
+        }
+    }
+
+    override fun part2(): Any {
+        return trees.maxOf { trees.scenicScore(it.key) }
     }
 
 
