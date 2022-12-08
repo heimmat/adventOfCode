@@ -12,5 +12,6 @@ class Year2022: Year(2022) {
         5 to Day05(),
         6 to Day06(),
         7 to Day07(),
+        8 to Day08()
     )
 }
