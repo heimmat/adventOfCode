@@ -18,6 +18,6 @@ class Year2022: Year(2022) {
         11 to Day11(),
 
         13 to Day13(),
-
+        14 to Day14(),
     )
 }

@@ -30,3 +30,19 @@ fun Pair<Int,Int>.moveTowards(that: Pair<Int, Int>): Pair<Int,Int> {
     val yStep = if (abs(diff.second) > 1) diff.second.sign else diff.second
     return this + (xStep to yStep)
 }
+
+operator fun Pair<Int,Int>.rangeTo(that: Pair<Int, Int>): List<Pair<Int,Int>> {
+    if (this.first == that.first || this.second == that.second) {
+        if (this.first == that.first) {
+            return (this.second..that.second).map {
+                this.first to it
+            }
+        } else {
+            return (this.first..that.first).map {
+                it to this.second
+            }
+        }
+    } else {
+        throw IllegalArgumentException("X or Y coordinate must equal")
+    }
+}

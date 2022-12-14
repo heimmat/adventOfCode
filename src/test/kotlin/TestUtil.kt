@@ -1,8 +1,10 @@
 import util.convertFromHexToBinary
 import util.isTouching
 import util.moveTowards
+import util.rangeTo
 import kotlin.test.assertEquals
 import kotlin.test.Test
+import kotlin.test.assertFails
 
 class TestUtil {
 
@@ -30,5 +32,11 @@ class TestUtil {
     fun testMoveTowards() {
         assertEquals((1 to 0),(0 to 0).moveTowards(2 to 0))
         assertEquals(1 to 1, (0 to 0).moveTowards(2 to 2))
+    }
+
+    @Test
+    fun testRangeTo() {
+        assertEquals(listOf(-1 to 0, 0 to 0, 1 to 0, 2 to 0), (-1 to 0)..(2 to 0))
+        assertFails { (-1 to -1)..(1 to 0) }
     }
 }
