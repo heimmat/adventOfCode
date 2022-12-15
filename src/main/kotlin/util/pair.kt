@@ -46,3 +46,18 @@ operator fun Pair<Int,Int>.rangeTo(that: Pair<Int, Int>): List<Pair<Int,Int>> {
         throw IllegalArgumentException("X or Y coordinate must equal")
     }
 }
+
+fun Pair<Int,Int>.coordinatesInManhattanDistance(distance: Int): Set<Pair<Int,Int>> {
+    val mutableSet = mutableSetOf<Pair<Int,Int>>()
+    for (xDiff in 0..distance) {
+        for (yDiff in 0..distance-xDiff) {
+            mutableSet.addAll(listOf(
+                (x + xDiff) to (y + yDiff),
+                (x + xDiff) to (y - yDiff),
+                (x - xDiff) to (y + yDiff),
+                (x - xDiff) to (y - yDiff)
+            ))
+        }
+    }
+    return mutableSet
+}

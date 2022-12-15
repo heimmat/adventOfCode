@@ -17,6 +17,7 @@ class Day14(debug: Boolean = false): Day(2022,14, debug) {
 
     private val startMap = (if (debug) testInput else input.asString)
         .split("\n")
+        .filterNotEmpty()
         .flatMap { line ->
             line.split(" -> ").map { coord ->
                 coord.split(",").map { it.toInt() }.toPair()

@@ -1,7 +1,4 @@
-import util.convertFromHexToBinary
-import util.isTouching
-import util.moveTowards
-import util.rangeTo
+import util.*
 import kotlin.test.assertEquals
 import kotlin.test.Test
 import kotlin.test.assertFails
@@ -38,5 +35,10 @@ class TestUtil {
     fun testRangeTo() {
         assertEquals(listOf(-1 to 0, 0 to 0, 1 to 0, 2 to 0), (-1 to 0)..(2 to 0))
         assertFails { (-1 to -1)..(1 to 0) }
+    }
+
+    @Test
+    fun testCoordinatesInManhattanDistance() {
+        assertEquals(listOf(0 to 0, 0 to 1, 1 to 0, -1 to 0, 0 to -1).size, (0 to 0).coordinatesInManhattanDistance(1).size)
     }
 }
