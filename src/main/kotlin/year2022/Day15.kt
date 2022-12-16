@@ -39,6 +39,18 @@ class Day15(debug: Boolean = false): Day(2022,15, debug) {
         return populateMapInLine(line, sensorsAndClosestBeacons).count { it.key.second == line && it.value == CoordinateState.BeaconImpossible }
     }
 
+    override fun part2(): Any {
+        val maxCoordinate = if (debug) 20 else 4000000
+        val test = (0..maxCoordinate).flatMap {
+            populateMapInLine(it, sensorsAndClosestBeacons).entries
+        }
+        val test2 = (0..maxCoordinate).first { y ->
+            (0..maxCoordinate).any { x -> x !in populateMapInLine(y, sensorsAndClosestBeacons).keys.map { it.x } }
+        }
+
+        return (0..maxCoordinate).first {  x -> x !in populateMapInLine(test2, sensorsAndClosestBeacons).keys.map { it.x } } to test2
+    }
+
     enum class CoordinateState {
         Sensor,
         Beacon,
@@ -73,20 +85,8 @@ class Day15(debug: Boolean = false): Day(2022,15, debug) {
     fun Pair<Int,Int>.coordinatesInManhattanDistanceInY(distance: Int, y: Int): Set<Pair<Int,Int>> {
         val mutableSet = mutableSetOf<Pair<Int,Int>>()
         for (xDiff in 0..distance) {
-            /*
-            for (yDiff in 0..distance-xDiff) {
-                mutableSet.addAll(listOf(
-                    (x + xDiff) to (y + yDiff),
-                    (x + xDiff) to (y - yDiff),
-                    (x - xDiff) to (y + yDiff),
-                    (x - xDiff) to (y - yDiff)
-                ).filter { it.y == y })
-            }*/
             if (y == (this.y - (distance-xDiff)) || y == (this.y + (distance - xDiff))) {
-                mutableSet.addAll(/*listOf(
-                    (x + xDiff) to y,
-                    (x - xDiff) to y
-                )*/((this.x-xDiff)..(this.x+xDiff)).map { it to y })
+                mutableSet.addAll(((this.x-xDiff)..(this.x+xDiff)).map { it to y })
             }
         }
         return mutableSet
