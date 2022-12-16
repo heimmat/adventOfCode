@@ -116,10 +116,10 @@ class Day14(debug: Boolean = false): Day(2022,14, debug) {
     }
 
     fun Map<Pair<Int,Int>, CoordinateState>.getOrDefaultWithFloor(key: Pair<Int,Int>, defaultValue: CoordinateState, mapHasFloor: Boolean, floorLevel: Int = lowestSolid() + 2): CoordinateState {
-        return if (!mapHasFloor || key.second != floorLevel) {
-            this.getOrDefault(key, defaultValue)
-        }  else {
+        return if (mapHasFloor && key.second == floorLevel) {
             CoordinateState.Rock
+        }  else {
+            this.getOrDefault(key, defaultValue)
         }
     }
 
