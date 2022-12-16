@@ -34,11 +34,21 @@ fun Pair<Int,Int>.moveTowards(that: Pair<Int, Int>): Pair<Int,Int> {
 operator fun Pair<Int,Int>.rangeTo(that: Pair<Int, Int>): List<Pair<Int,Int>> {
     if (this.first == that.first || this.second == that.second) {
         if (this.first == that.first) {
-            return (this.second..that.second).map {
+            val ys = if (this.second < that.second) {
+                this.second..that.second
+            } else {
+                this.second downTo that.second
+            }
+            return ys.map {
                 this.first to it
             }
         } else {
-            return (this.first..that.first).map {
+            val xs = if (this.first < that.first) {
+                this.first..that.first
+            } else {
+                this.first downTo that.first
+            }
+            return xs.map {
                 it to this.second
             }
         }
